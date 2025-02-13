@@ -5,27 +5,42 @@ defmodule TenExTakeHomeWeb.PageController do
     # The home page is often custom made,
     # so skip the default app layout.
 
-    dbg(Application.get_env(:ten_ex_take_home, :public_key))
-    dbg(Application.get_env(:ten_ex_take_home, :private_key))
+    public_key = Application.get_env(:ten_ex_take_home, :public_key)
+    private_key = Application.get_env(:ten_ex_take_home, :private_key)
+
+    ts = to_string(:rand.uniform(9))
+    hash_target = ts <> private_key <> public_key
+    dbg(hash_target)
 
     md5_hash =
-      :crypto.hash(:md5, "1234abcd")
+      :crypto.hash(:md5, hash_target)
       |> Base.encode16(case: :lower)
 
     dbg(md5_hash)
 
-    # user_url = form_url("v1/public")
-    # build_request(user_url)
+    ts = "ts=#{ts}"
+    apikey = "&apikey=#{public_key}"
+    hash = "&hash=#{md5_hash}"
+
+    url = ts <> apikey <> hash
+
+    # http://gateway.marvel.com/v1/public/comics?ts=1&apikey=1234&hash=ffd275c5130566a2916217b101f26150
+
+    req_url = form_url(url)
+    build_request(req_url)
     render(conn, :home, layout: false)
   end
 
-  def form_url(username) do
-    "https://gateway.marvel.com/" <> username
+  def form_url(url) do
+    "https://gateway.marvel.com/v1/public/comics?" <> url
   end
 
-  def build_request(user_url) do
-    Finch.build(:get, user_url)
-    |> Finch.request(TenExTakeHome.Finch)
+  def build_request(req_url) do
+    result =
+      Finch.build(:get, req_url)
+      |> Finch.request(TenExTakeHome.Finch)
+
+    dbg(result)
   end
 end
 
