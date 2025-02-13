@@ -6,8 +6,8 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :ten_ex_take_home, TenExTakeHome.Repo,
-  username: "postgres",
-  password: "demo123*",
+  username: "deankinyua",
+  password: "kamanu254",
   hostname: "localhost",
   database: "ten_ex_take_home_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,

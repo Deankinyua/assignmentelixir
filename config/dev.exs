@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :ten_ex_take_home, TenExTakeHome.Repo,
-  username: "postgres",
-  password: "demo123*",
+  username: "deankinyua",
+  password: "postgres",
   hostname: "localhost",
   database: "ten_ex_take_home_dev",
   stacktrace: true,
@@ -28,6 +28,10 @@ config :ten_ex_take_home, TenExTakeHomeWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
+
+config :ten_ex_take_home, public_key: System.get_env("PUBLIC_KEY")
+config :ten_ex_take_home, private_key: System.get_env("PRIVATE_KEY")
+# config :ten_ex_take_home, public_key: System.get_env("USER_ID")
 
 # ## SSL Support
 #
